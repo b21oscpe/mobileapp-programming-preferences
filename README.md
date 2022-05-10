@@ -1,39 +1,55 @@
 
 # Rapport
 
-**Skriv din rapport här!**
-
-_Du kan ta bort all text som finns sedan tidigare_.
-
-## Följande grundsyn gäller dugga-svar:
-
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
-
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
+**Assignment 6: Preferences**
 
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+// Här är kod från min OnCreate()-funktion där vi använder oss av intents för att skicka användaren till nästa sida. 
+        text_label = findViewById(R.id.text_label);
+
+        preferences = getSharedPreferences("preferences", MODE_PRIVATE);
+
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Log.d("==>", "Click registered");
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                startActivity(intent);
+            }
+        });
+
+// I vår OnResume()-funktion hämtar vi det som sparades i SecondActivity med preferences. Om ingenting hittades skriver vi ut "name cant be found".
+protected void onResume() {
+        Log.d("==>", "onResume");
+        super.onResume();
+
+        String name = preferences.getString("name", "name cant be found");
+        text_label.setText(name);
+        
+// Här använder vi oss av en EditText och en "editor" för att spara det som användaren angett i strängformat. När användaren återgår till MainActivity kommer texten som de skrev dyka upp.
+        edit_name = findViewById(R.id.editTextTextPersonName);
+        preferences = getSharedPreferences("preferences", MODE_PRIVATE);
+
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("==>", "Registered click");
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("name", edit_name.getText().toString());
+                editor.apply();
+            }
+        });
     }
-}
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
+![](1.png)
 
-![](android.png)
+![](2.png)
+
+![](3.png)
 
 Läs gärna:
 
